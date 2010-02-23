@@ -120,12 +120,16 @@ function! GitVimDiff(args)
         echo "No output from git command"
         return
     endif
+    let filetype = &filetype
 
     diffthis
 
+    let git_command_edit_save = g:git_command_edit
+    let g:git_command_edit = 'vnew'
     call <SID>OpenGitBuffer(git_output)
+    let g:git_command_edit = git_command_edit_save
+    let &filetype = filetype
     diffthis
-    setlocal filetype=git-vimdiff
 endfunction
 
 " Show Status.
